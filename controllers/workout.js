@@ -35,7 +35,7 @@ module.exports.updateWorkout = (req, res) => {
 	return Workout.findOneAndUpdate(
 		{ _id: req.params.id, userId: req.user.id },
 		workoutUpdates,
-		{ new: false }
+		{ new: true }
 	)
 		.then((updatedWorkout) => {
 			if (!updatedWorkout) {
