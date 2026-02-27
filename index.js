@@ -25,7 +25,7 @@ const userRoutes = require("./routes/user");
 app.use("/workouts", workoutRoutes);
 app.use("/users", userRoutes);
 
-const { errorHandler } = require("./auth");
+
 
 if (require.main === module) {
 	app.listen(process.env.PORT || 4000, () => {
