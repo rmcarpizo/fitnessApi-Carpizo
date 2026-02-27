@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const auth = require("../auth");
+const { errorHandler } = require("../auth");
 
 module.exports.registerUser = (req, res) => {
 	if (!req.body.email.includes("@")) {
@@ -15,10 +16,7 @@ module.exports.registerUser = (req, res) => {
 
 		return newUser.save()
 			.then((user) => res.status(201).send({ message: "Registered Successfully" }))
-			.catch((err) => {
-				console.error("Error in saving: ", err);
-				return res.status(500).send({ error: "Error in save" });
-			});
+			.catch(err => errorHandler(err, req, res))
 	}
 };
 

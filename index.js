@@ -1,17 +1,20 @@
 
-
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const { errorHandler } = require("./auth");
+
 const app = express();
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // MongoDB Connection
-mongoose.connect("mongodb+srv://admin:admin1234@carpizodb.35rk5vw.mongodb.net/fitnessApp?retryWrites=true&w=majority");
+mongoose.connect(process.env.MONGODB_STRING);
 
 mongoose.connection.once("open", () => console.log("Now connected to MongoDB Atlas."));
 
@@ -21,6 +24,8 @@ const userRoutes = require("./routes/user");
 
 app.use("/workouts", workoutRoutes);
 app.use("/users", userRoutes);
+
+const { errorHandler } = require("./auth");
 
 if (require.main === module) {
 	app.listen(process.env.PORT || 4000, () => {

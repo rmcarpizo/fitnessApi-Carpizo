@@ -1,4 +1,5 @@
 const Workout = require("../models/Workout");
+const { errorHandler } = require("../auth");
 
 module.exports.addWorkout = (req, res) => {
 	let newWorkout = new Workout({
@@ -9,10 +10,7 @@ module.exports.addWorkout = (req, res) => {
 
 	return newWorkout.save()
 		.then((savedWorkout) => res.status(201).send(savedWorkout))
-		.catch((err) => {
-			console.error("Error in saving workout: ", err);
-			return res.status(500).send({ error: "Failed to save the workout" });
-		});
+		.catch(err => errorHandler(err, req, res));
 };
 
 module.exports.getMyWorkouts = (req, res) => {
@@ -20,10 +18,7 @@ module.exports.getMyWorkouts = (req, res) => {
 		.then((workouts) => {
 			return res.status(200).send({ workouts });
 		})
-		.catch((err) => {
-			console.error("Error in fetching workouts: ", err);
-			return res.status(500).send({ error: "Error finding workouts." });
-		});
+		.catch(err => errorHandler(err, req, res));
 };
 
 module.exports.updateWorkout = (req, res) => {
@@ -46,10 +41,7 @@ module.exports.updateWorkout = (req, res) => {
 				updatedWorkout: updatedWorkout
 			});
 		})
-		.catch((err) => {
-			console.error("Error in updating workout: ", err);
-			return res.status(500).send({ error: "Error in updating a workout." });
-		});
+		.catch(err => errorHandler(err, req, res));
 };
 
 module.exports.deleteWorkout = (req, res) => {
@@ -60,10 +52,7 @@ module.exports.deleteWorkout = (req, res) => {
 			}
 			return res.status(200).send({ message: "Workout deleted successfully" });
 		})
-		.catch((err) => {
-			console.error("Error in deleting workout: ", err);
-			return res.status(500).send({ error: "Error in deleting a workout." });
-		});
+		.catch(err => errorHandler(err, req, res));
 };
 
 module.exports.completeWorkoutStatus = (req, res) => {
@@ -81,8 +70,5 @@ module.exports.completeWorkoutStatus = (req, res) => {
 				updatedWorkout: updatedWorkout
 			});
 		})
-		.catch((err) => {
-			console.error("Error in updating workout status: ", err);
-			return res.status(500).send({ error: "Error in updating workout status." });
-		});
+		.catch(err => errorHandler(err, req, res));
 };

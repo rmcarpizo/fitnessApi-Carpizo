@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-const secret = "fitnessTrackerSecret";
+require('dotenv').config();   
+const secret = process.env.JWT_SECRET_KEY;
 
 module.exports.createAccessToken = (user) => {
 	const data = {
@@ -32,3 +33,16 @@ module.exports.verify = (req, res, next) => {
 		});
 	}
 };
+
+module.exports.errorHandler = (err, req, res, next) => {
+    console.error(err);
+    const statusCode = err.status || 500;
+    const errorMessage = err.message || 'Internal Server Error';
+    res.status(statusCode).json({
+        error: {
+            message: errorMessage,
+            errorCode: err.code || 'SERVER_ERROR',
+            details: err.details || null
+        }
+    });
+}
